@@ -10,17 +10,29 @@ This project explores how **carbon awareness** can become a first-class concern 
 
 ---
 
-## ⭐ Key Capabilities
+✅ Key Capabilities
 
-✅ Analyzes SQL structure (joins, aggregation, complexity)
-✅ Generates multiple execution plans (Fast / Balanced / Efficient)
-✅ Estimates run time + energy use
-✅ Tracks real-time carbon intensity (or uses fallback model)
-✅ Chooses the greenest option based on urgency + emissions
-✅ Can defer low-priority workloads to cleaner time windows
-✅ Explains its decision (“why this plan?”)
+- Analyze SQL structure (joins, aggregations, complexity)
 
-✔ Powered by **DuckDB**
+- Generate multiple execution plans: Fast / Balanced / Efficient
+
+- Estimate runtime and approximate energy usage
+
+- Retrieve real-time carbon-intensity data (or use fallback model)
+
+- Select the best execution option based on:
+
+- Query urgency
+
+- Carbon intensity
+
+- Performance trade-offs
+
+- Optionally defer non-urgent queries to cleaner time windows
+
+- Provide clear execution + decision explanation
+
+Built on DuckDB for lightweight local execution- 
 
 ---
 
