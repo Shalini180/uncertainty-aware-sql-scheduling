@@ -32,7 +32,7 @@ This project explores how **carbon awareness** can become a first-class concern 
 
 - Provide clear execution + decision explanation
 
-Built on DuckDB for lightweight local execution- 
+Built on DuckDB for lightweight local execution
 
 ---
 
@@ -183,6 +183,3 @@ Show that query planners can:
 * Reduce emissions without developer involvement
 
 > This is a research prototype, not a production database.
-
-
-Just tell me!
