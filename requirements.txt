@@ -1,0 +1,14 @@
+duckdb
+pandas
+numpy
+pyRAPL
+streamlit
+plotly
+scikit-learn
+xgboost
+requests
+aiohttp
+sqlparse
+pytest
+black
+pre-commit
