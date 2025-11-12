@@ -6,9 +6,11 @@ st.title("Energy-aware ML Playground")
 st.write("Hello! ?? This is a starter Streamlit app.")
 
 con = duckdb.connect(":memory:")
-df = pd.DataFrame({"x":[1,2,3], "y":[3,2,1]})
+df = pd.DataFrame({"x": [1, 2, 3], "y": [3, 2, 1]})
 st.dataframe(df)
-st.plotly_chart({
-    "data": [{"x": df["x"], "y": df["y"], "type":"scatter"}],
-    "layout": {"title": "Sample"}
-})
+st.plotly_chart(
+    {
+        "data": [{"x": df["x"], "y": df["y"], "type": "scatter"}],
+        "layout": {"title": "Sample"},
+    }
+)

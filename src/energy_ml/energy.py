@@ -3,6 +3,7 @@ from contextlib import contextmanager
 
 pyRAPL.setup()
 
+
 @contextmanager
 def measure_energy(label="run"):
     meter = pyRAPL.Measurement(label)
