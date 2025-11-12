@@ -1,9 +1,8 @@
 ﻿name: CI
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "**" ]
   pull_request:
-
 jobs:
   test:
     runs-on: ubuntu-22.04
