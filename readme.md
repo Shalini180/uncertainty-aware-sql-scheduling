@@ -1,97 +1,128 @@
-Carbon-Aware SQL Query Engine
+Understood — you want the README to be **more appealing / engaging**, while staying concise and focused.
 
-This project demonstrates how a database execution engine can incorporate real-time carbon-intensity awareness into query planning.
-Instead of optimizing only for speed, the system considers:
+Below is a redesigned version that is:
+✅ Clearer
+✅ Visually structured
+✅ More engaging + scannable
+✅ Shorter + more inviting
 
-Query complexity
+---
 
-Energy use
+# 🌿 Carbon-Aware SQL Query Engine
 
-Carbon intensity of the power grid
+A proof-of-concept query engine that reduces carbon emissions by choosing **when** and **how** to run SQL workloads based on real-time grid conditions.
 
-User-defined urgency
+Modern databases only optimize for speed.
+But electricity gets cleaner or dirtier throughout the day.
+If a workload isn’t urgent, delaying execution may significantly reduce its carbon footprint.
 
-Its goal is simple:
+This project explores how **carbon awareness** can become a first-class concern in query planning.
 
-Reduce emissions from data workloads by selecting low-carbon execution strategies or deferring non-urgent queries.
+---
 
-This repo serves as a proof-of-concept for sustainable computing and environmentally informed workload scheduling.
+## ⭐ Key Capabilities
 
-✅ What It Does
+✅ Analyzes SQL structure (joins, aggregation, complexity)
+✅ Generates multiple execution plans (Fast / Balanced / Efficient)
+✅ Estimates run time + energy use
+✅ Tracks real-time carbon intensity (or uses fallback model)
+✅ Chooses the greenest option based on urgency + emissions
+✅ Can defer low-priority workloads to cleaner time windows
+✅ Explains its decision (“why this plan?”)
 
-Analyzes SQL query structure (joins, aggregation, complexity)
+✔ Powered by **DuckDB**
 
-Builds multiple execution plans (Fast / Balanced / Efficient)
+---
 
-Estimates execution cost + energy usage
+## 🧠 Why This Matters
 
-Pulls real-time grid carbon intensity (or uses fallback model)
+> The carbon emissions of a query depend not only on how fast it runs,
+> but also **when and where** it runs.
 
-Selects best execution plan given urgency + carbon
+By scheduling non-urgent operations during low-carbon periods, large systems can reduce emissions at scale without changing the workload.
 
-Optionally defers non-urgent queries until a cleaner window
+This repository demonstrates one possible design for a **sustainable database optimizer**.
 
-Provides structured result + explanation
+---
 
-DuckDB is used as the local execution backend.
+## 🏗 Architecture Overview
 
-🏛 System Architecture
-High-Level Flow
+```
 SQL Query
    │
    ▼
 Query Analyzer ──► Plan Compiler ──► Profiler
    │                                 │
-   └─────────────► Carbon-Aware Selector ◄──── Carbon Data
+   └─────────────► Carbon-Aware Selector ◄── Carbon Data
                                      │
-                                     ├── Run now → Executor (DuckDB)
-                                     └── Defer → Wait Window
+                          ┌──────────┴──────────┐
+                          │                     │
+                     Run now                Defer
+                          │                     │
+                          ▼                     ▼
+                      Executor             Wait window
+                      (DuckDB)
+```
 
-Component Breakdown
-Component	Responsibility
-Query Analyzer	Parse SQL; extract structural features (joins, aggregations, filters).
-Plan Compiler	Generate execution variants (Fast / Balanced / Efficient).
-Profiler	Estimate or measure time + energy usage.
-Carbon Data Provider	Fetch real-time grid carbon intensity or use fallback model.
-Selector (Decision Engine)	Choose plan based on urgency × emissions × performance; may defer.
-Executor (DuckDB)	Execute final chosen plan.
-Metrics Collector	Gather runtime + carbon/energy estimates.
-UI (Streamlit)	Simple user-facing interface.
-🔧 Requirements
+### Core Components
 
-Python 3.10+
+| Component             | Role                                        |
+| --------------------- | ------------------------------------------- |
+| **Query Analyzer**    | Parses SQL + extracts query structure       |
+| **Plan Compiler**     | Builds Fast / Balanced / Efficient variants |
+| **Profiler**          | Estimates time + energy                     |
+| **Carbon Provider**   | Retrieves grid carbon intensity             |
+| **Selector**          | Chooses plan or defers                      |
+| **Executor**          | Runs via DuckDB                             |
+| **Metrics Collector** | Records runtime + emissions                 |
+| **Streamlit UI**      | Simple interface                            |
 
-DuckDB
+---
 
-Linux / WSL2 recommended for energy measurement
+## 🔧 Requirements
 
-Optional: ElectricityMaps API token
+* Python 3.10+
+* DuckDB
+* Linux / WSL2 recommended for energy measurements
+* Optional: ElectricityMaps API token
 
-If energy measurement hardware is unavailable, energy defaults to estimation.
+> Without RAPL hardware, energy reporting is estimated.
 
-📦 Install
+---
+
+## 📦 Installation
+
+```bash
 git clone <repo-url>
 cd carbon-aware-sql-engine
+
 python -m venv venv
-source venv/bin/activate    # Windows: .\venv\Scripts\activate
+source venv/bin/activate   # Windows: .\venv\Scripts\activate
+
 pip install -r requirements.txt
+```
 
+Optional `.env`:
 
-Optional .env:
-
+```
 ELECTRICITYMAPS_API_TOKEN=<token>
 EM_ZONE=US-CAL-CISO
+```
 
-▶️ Usage
-Python
+---
+
+## ▶️ Quick Start
+
+### Python
+
+```python
 from src.core.engine import CarbonAwareQueryEngine
 from src.optimizer.selector import QueryUrgency
 
 engine = CarbonAwareQueryEngine()
-sql = "SELECT COUNT(*) FROM my_table"
 
 result, metrics, decision = engine.execute_query(
-    sql,
+    "SELECT COUNT(*) FROM my_table",
     urgency=QueryUrgency.MEDIUM,
     explain=True
 )
@@ -99,48 +130,57 @@ result, metrics, decision = engine.execute_query(
 print(result)
 print(metrics)
 print(decision.explain())
+```
 
-Streamlit UI
+### UI
+
+```bash
 streamlit run src/energy_ml/decision_app.py
+```
 
-📂 Code Structure
+---
+
+## 📂 Directory Structure
+
+```
 src/
- ├─ core/
- │   ├─ engine.py       # Main entry point
- │   ├─ compiler.py     # Builds execution alternatives
- │   ├─ executor.py     # Runs queries with DuckDB
- │   └─ profiler.py     # Time + energy measurement
- ├─ optimizer/
- │   ├─ carbon_api.py   # Real-time carbon lookup
- │   └─ selector.py     # Decision + scheduling logic
- └─ utils/
-     └─ query_parser.py # SQL analysis
+ ├─ core/          # Engine + profiling + execution
+ ├─ optimizer/     # Policy + carbon integration
+ └─ utils/         # SQL parsing
+```
 
-📝 Example Output
-Selected strategy: Efficient
-Reason: High carbon → minimization preferred
-Duration: 412 ms
+---
+
+## ✅ Example Output
+
+```
+Plan chosen: Efficient
+Reason: High grid carbon → minimize energy
+Exec time: 412 ms
 Energy: ~7 J
-Carbon: ~0.004 g CO₂
+Emissions: ~0.004 g CO₂
+Action: Deferred 90 min (non-urgent)
+```
 
-Non-urgent workload → deferred ~90 minutes
+---
 
-⚠ Notes
+## ⚠ Limitations
 
-Energy accuracy depends on hardware (best on Linux/WSL2).
+* Most accurate on Linux / WSL2
+* Scheduling is not persistent (PoC only)
+* Carbon data depends on region/provider
 
-Carbon forecasting depends on provider + region.
+---
 
-Scheduling is non-persistent (PoC only).
+## 🎯 Goal
 
-📌 Goal
+Show that query planners can:
 
-This project is intended to spark discussion on:
+* Consider environmental signals
+* Adjust execution strategy automatically
+* Reduce emissions without developer involvement
 
-How carbon signals can guide database execution
+> This is a research prototype, not a production database.
 
-How sustainable computing can be pushed into query engines
 
-What a carbon-aware optimizer might look like in practice
-
-It is not designed to replace a production system, but to illustrate how environmental signals can be integrated into query planning with minimal user involvement.
+Just tell me!
