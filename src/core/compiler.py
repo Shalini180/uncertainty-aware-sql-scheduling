@@ -48,47 +48,41 @@ class MultiVariantCompiler:
         variants = {}
 
         # FAST variant: Maximum performance
+        # FAST variant: Maximum performance
         variants[ExecutionStrategy.FAST] = QueryVariant(
             strategy=ExecutionStrategy.FAST,
             config={
                 "threads": self.max_threads,
                 "memory_limit": "4GB",
-                "enable_parallel": True,
                 "enable_optimizer": True,
-                "temp_directory": "/tmp/duckdb_fast",
             },
-            estimated_latency=100.0,  # Baseline
-            estimated_energy=150.0,  # High energy
+            estimated_latency=100.0,
+            estimated_energy=150.0,
         )
 
         # EFFICIENT variant: Minimize energy
         variants[ExecutionStrategy.EFFICIENT] = QueryVariant(
             strategy=ExecutionStrategy.EFFICIENT,
             config={
-                "threads": max(1, self.max_threads // 4),  # 1/4 threads
+                "threads": max(1, self.max_threads // 4),
                 "memory_limit": "1GB",
-                "enable_parallel": False,
                 "enable_optimizer": True,
-                "temp_directory": "/tmp/duckdb_efficient",
             },
-            estimated_latency=200.0,  # Slower
-            estimated_energy=80.0,  # Low energy
+            estimated_latency=200.0,
+            estimated_energy=80.0,
         )
 
         # BALANCED variant: Trade-off
         variants[ExecutionStrategy.BALANCED] = QueryVariant(
             strategy=ExecutionStrategy.BALANCED,
             config={
-                "threads": max(2, self.max_threads // 2),  # Half threads
+                "threads": max(2, self.max_threads // 2),
                 "memory_limit": "2GB",
-                "enable_parallel": True,
                 "enable_optimizer": True,
-                "temp_directory": "/tmp/duckdb_balanced",
             },
             estimated_latency=140.0,
             estimated_energy=110.0,
         )
-
         return variants
 
     def get_connection(self, variant: QueryVariant) -> duckdb.DuckDBPyConnection:
@@ -107,16 +101,33 @@ class MultiVariantCompiler:
             conn = duckdb.connect(self.db_path)
 
             # Apply configuration
-            conn.execute(f"SET threads TO {variant.config['threads']}")
-            conn.execute(f"SET memory_limit = '{variant.config['memory_limit']}'")
+            try:
+                conn.execute(f"SET threads TO {variant.config['threads']}")
+            except:
+                pass  # Some DuckDB versions don't support this
 
-            if variant.config.get("enable_parallel"):
-                conn.execute("SET enable_parallelism = true")
-            else:
-                conn.execute("SET enable_parallelism = false")
+            try:
+                conn.execute(f"SET memory_limit = '{variant.config['memory_limit']}'")
+            except:
+                pass
 
-            if variant.config.get("enable_optimizer"):
-                conn.execute("SET enable_optimizer = true")
+            # DuckDB doesn't have enable_parallelism setting
+            # Thread count controls parallelism instead
+
+            try:
+                if variant.config.get("enable_optimizer", True):
+                    conn.execute("SET enable_optimizer = true")
+            except:
+                pass
+
+            # Optional: Set temp directory if specified
+            if "temp_directory" in variant.config:
+                try:
+                    conn.execute(
+                        f"SET temp_directory = '{variant.config['temp_directory']}'"
+                    )
+                except:
+                    pass
 
             self.conn_pool[strategy_key] = conn
 
