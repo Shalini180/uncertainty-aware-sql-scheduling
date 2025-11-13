@@ -13,3 +13,21 @@ fmt:
 black src tests
 
 ci: fmt test
+
+.PHONY: dev install run ui eval analyze
+
+install:
+\tpython -m pip install -e . -r requirements.txt
+
+run:
+\tpython -m src.core.engine
+
+ui:
+\tstreamlit run src/energy_ml/decision_app.py
+
+eval:
+\tpython -m evaluation.run_experiments
+
+analyze:
+\tpython -m evaluation.analyze_results
+
