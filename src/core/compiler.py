@@ -1,7 +1,7 @@
 ﻿# src/core/compiler.py
 import duckdb
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 from dataclasses import dataclass
 import os
 
@@ -9,9 +9,9 @@ import os
 class ExecutionStrategy(Enum):
     """Execution strategies for queries"""
 
-    FAST = "fast"  # Latency-optimized (max threads, aggressive)
-    EFFICIENT = "efficient"  # Energy-optimized (fewer threads)
-    BALANCED = "balanced"  # Middle ground
+    FAST = "fast"
+    EFFICIENT = "efficient"
+    BALANCED = "balanced"
 
 
 @dataclass
@@ -36,18 +36,9 @@ class MultiVariantCompiler:
         self.max_threads = os.cpu_count() or 4
 
     def compile(self, sql: str) -> Dict[ExecutionStrategy, QueryVariant]:
-        """
-        Compile query into multiple variants
-
-        Args:
-            sql: SQL query string
-
-        Returns:
-            Dictionary mapping strategy to variant configuration
-        """
+        """Compile query into multiple variants"""
         variants = {}
 
-        # FAST variant: Maximum performance
         # FAST variant: Maximum performance
         variants[ExecutionStrategy.FAST] = QueryVariant(
             strategy=ExecutionStrategy.FAST,
@@ -83,51 +74,25 @@ class MultiVariantCompiler:
             estimated_latency=140.0,
             estimated_energy=110.0,
         )
+
         return variants
 
     def get_connection(self, variant: QueryVariant) -> duckdb.DuckDBPyConnection:
-        """
-        Get or create a configured connection for a variant
-
-        Args:
-            variant: Query variant with configuration
-
-        Returns:
-            Configured DuckDB connection
-        """
+        """Get or create a configured connection for a variant"""
         strategy_key = variant.strategy.value
 
         if strategy_key not in self.conn_pool:
             conn = duckdb.connect(self.db_path)
 
-            # Apply configuration
             try:
                 conn.execute(f"SET threads TO {variant.config['threads']}")
             except:
-                pass  # Some DuckDB versions don't support this
+                pass
 
             try:
                 conn.execute(f"SET memory_limit = '{variant.config['memory_limit']}'")
             except:
                 pass
-
-            # DuckDB doesn't have enable_parallelism setting
-            # Thread count controls parallelism instead
-
-            try:
-                if variant.config.get("enable_optimizer", True):
-                    conn.execute("SET enable_optimizer = true")
-            except:
-                pass
-
-            # Optional: Set temp directory if specified
-            if "temp_directory" in variant.config:
-                try:
-                    conn.execute(
-                        f"SET temp_directory = '{variant.config['temp_directory']}'"
-                    )
-                except:
-                    pass
 
             self.conn_pool[strategy_key] = conn
 
@@ -138,15 +103,3 @@ class MultiVariantCompiler:
         for conn in self.conn_pool.values():
             conn.close()
         self.conn_pool.clear()
-
-
-# Test it
-if __name__ == "__main__":
-    compiler = MultiVariantCompiler()
-
-    sql = "SELECT customer_id, SUM(amount) FROM orders GROUP BY customer_id"
-    variants = compiler.compile(sql)
-
-    print("Generated variants:")
-    for strategy, variant in variants.items():
-        print(f"  {variant}")

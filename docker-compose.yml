@@ -1,13 +1,118 @@
 version: '3.8'
 
 services:
-  carbon-query-engine:
-    build: .
+  postgres:
+    image: postgres:15-alpine
+    container_name: energy_ml_db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-energy_ml}
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme123}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - energy_ml_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: energy_ml_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - energy_ml_network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: energy_ml_app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-changeme123}@postgres:5432/${POSTGRES_DB:-energy_ml}
+      - REDIS_URL=redis://redis:6379/0
+      - ELECTRICITYMAPS_API_TOKEN=${ELECTRICITYMAPS_API_TOKEN}
+      - EM_ZONE=${EM_ZONE:-US-CAL-CISO}
+      - ENVIRONMENT=production
     ports:
       - "8501:8501"
+      - "8000:8000"
     volumes:
       - ./data:/app/data
-      - ./config:/app/config
-    environment:
-      - PYTHONUNBUFFERED=1
+      - ./logs:/app/logs
     restart: unless-stopped
+    networks:
+      - energy_ml_network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: energy_ml_api
+    command: uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-changeme123}@postgres:5432/${POSTGRES_DB:-energy_ml}
+      - REDIS_URL=redis://redis:6379/0
+      - ELECTRICITYMAPS_API_TOKEN=${ELECTRICITYMAPS_API_TOKEN}
+      - EM_ZONE=${EM_ZONE:-US-CAL-CISO}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - energy_ml_network
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: energy_ml_scheduler
+    command: python -m src.scheduler.worker
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-changeme123}@postgres:5432/${POSTGRES_DB:-energy_ml}
+      - REDIS_URL=redis://redis:6379/0
+      - ELECTRICITYMAPS_API_TOKEN=${ELECTRICITYMAPS_API_TOKEN}
+      - EM_ZONE=${EM_ZONE:-US-CAL-CISO}
+    restart: unless-stopped
+    networks:
+      - energy_ml_network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  energy_ml_network:
+    driver: bridge
