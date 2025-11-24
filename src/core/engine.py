@@ -148,7 +148,9 @@ class CarbonAwareQueryEngine:
         conn = self.compiler.get_connection(decision.selected_variant)
 
         def run_query():
-            return conn.execute(sql).fetchall()
+            # Use optimized SQL if available
+            query_to_run = decision.selected_variant.sql or sql
+            return conn.execute(query_to_run).fetchall()
 
         result, metrics = self.profiler.profile(run_query)
 
