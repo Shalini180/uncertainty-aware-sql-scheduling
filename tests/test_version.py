@@ -1,4 +1,4 @@
-from energy_ml import __version__
+from src.energy_ml import __version__
 
 
 def test_version():

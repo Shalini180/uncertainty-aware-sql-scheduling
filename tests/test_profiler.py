@@ -1,10 +1,13 @@
-from src.core.profiler import measure, to_metrics
+from src.core.profiler import EnergyProfiler
 
 
 def test_profiler_context():
-    with measure() as m:
+    profiler = EnergyProfiler()
+
+    # Test using context manager
+    with profiler.profile_context() as ctx:
         s = sum(range(10_000))
-    met = to_metrics(m)
-    assert met.duration_ms > 0
-    assert met.energy_joules >= 0
-    assert met.power_watts >= 0
+
+    assert ctx.metrics.duration_ms > 0
+    assert ctx.metrics.energy_joules >= 0
+    assert ctx.metrics.power_watts >= 0
