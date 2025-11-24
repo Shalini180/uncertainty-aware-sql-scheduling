@@ -18,6 +18,7 @@ celery==5.3.4
 # API
 fastapi==0.105.0
 uvicorn[standard]==0.24.0
+gunicorn==21.2.0
 python-multipart==0.0.6
 
 # Web UI

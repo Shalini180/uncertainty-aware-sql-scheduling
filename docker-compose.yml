@@ -65,9 +65,8 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.api
     container_name: energy_ml_api
-    command: uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
     depends_on:
       postgres:
         condition: service_healthy
@@ -78,14 +77,23 @@ services:
       - REDIS_URL=redis://redis:6379/0
       - ELECTRICITYMAPS_API_TOKEN=${ELECTRICITYMAPS_API_TOKEN}
       - EM_ZONE=${EM_ZONE:-US-CAL-CISO}
+      - ENVIRONMENT=production
+      - GUNICORN_WORKERS=4
     ports:
       - "8000:8000"
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
+      - sqlalchemy_data:/app/src/db
     restart: unless-stopped
     networks:
       - energy_ml_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   scheduler:
     build:
@@ -111,6 +119,8 @@ volumes:
   postgres_data:
     driver: local
   redis_data:
+    driver: local
+  sqlalchemy_data:
     driver: local
 
 networks:
