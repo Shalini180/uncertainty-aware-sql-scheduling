@@ -1,106 +1,185 @@
-# 🌱 Carbon-Aware SQL Engine
-### *Optimizing Database Queries for a Greener Future*
+# 🌿 Carbon-Aware SQL Query Engine
+
+A proof-of-concept query engine that reduces carbon emissions by choosing **when** and **how** to run SQL workloads based on real-time grid conditions.
+
+Modern databases only optimize for speed.
+But electricity gets cleaner or dirtier throughout the day.
+If a workload isn’t urgent, delaying execution may significantly reduce its carbon footprint.
+
+This project explores how **carbon awareness** can become a first-class concern in query planning.
 
 ---
 
-## 📖 Abstract & Impact
+✅ Key Capabilities
 
-The **Carbon-Aware SQL Engine** is a novel database middleware that intelligently schedules SQL query execution based on real-time grid carbon intensity. By integrating **uncertainty quantification** into the decision-making process, this system minimizes the carbon footprint of data operations without compromising critical performance requirements.
+- Analyze SQL structure (joins, aggregations, complexity)
 
-**Key Contributions:**
-*   **Carbon-Aware Selector:** A robust decision engine that defers non-urgent queries during high-carbon periods.
-*   **Uncertainty Quantification:** Incorporates forecast uncertainty ($I$) and energy consumption variability ($\sigma$) to make conservative, reliable scheduling decisions.
-*   **Multi-Strategy Execution:** Dynamically selects between "Fast", "Balanced", and "Efficient" execution plans based on environmental context.
+- Generate multiple execution plans: Fast / Balanced / Efficient
+
+- Estimate runtime and approximate energy usage
+
+- Retrieve real-time carbon-intensity data (or use fallback model)
+
+- Select the best execution option based on:
+
+- Query urgency
+
+- Carbon intensity
+
+- Performance trade-offs
+
+- Optionally defer non-urgent queries to cleaner time windows
+
+- Provide clear execution + decision explanation
+
+Built on DuckDB for lightweight local execution
 
 ---
 
-## 🏗️ System Architecture
+## 🧠 Why This Matters
 
-The system operates as a middleware layer between the client application and the database.
+> The carbon emissions of a query depend not only on how fast it runs,
+> but also **when and where** it runs.
 
-```mermaid
-graph TD
-    Client[Client Application] -->|SQL Query + Urgency| API[FastAPI Backend]
-    API -->|Parse & Hash| Selector[Carbon-Aware Selector]
-    
-    subgraph "Decision Engine"
-        Selector -->|Fetch Forecast| CarbonAPI[Carbon Intensity API]
-        Selector -->|Check History| HistoryDB[(History DB)]
-        Selector -->|Quantify Uncertainty| Profiler[Energy Profiler]
-    end
-    
-    Selector -->|Decision: Execute| Executor[Query Executor]
-    Selector -->|Decision: Defer| Scheduler[Redis Scheduler]
-    
-    Executor -->|Run Query| DB[(PostgreSQL)]
-    Scheduler -->|Trigger Later| Executor
-    
-    Executor -->|Log Metrics| MetricsDB[(Metrics DB)]
+By scheduling non-urgent operations during low-carbon periods, large systems can reduce emissions at scale without changing the workload.
+
+This repository demonstrates one possible design for a **sustainable database optimizer**.
+
+---
+
+## 🏗 Architecture Overview
+
+```
+SQL Query
+   │
+   ▼
+Query Analyzer ──► Plan Compiler ──► Profiler
+   │                                 │
+   └─────────────► Carbon-Aware Selector ◄── Carbon Data
+                                     │
+                          ┌──────────┴──────────┐
+                          │                     │
+                     Run now                Defer
+                          │                     │
+                          ▼                     ▼
+                      Executor             Wait window
+                      (DuckDB)
 ```
 
+### Core Components
+
+| Component             | Role                                        |
+| --------------------- | ------------------------------------------- |
+| **Query Analyzer**    | Parses SQL + extracts query structure       |
+| **Plan Compiler**     | Builds Fast / Balanced / Efficient variants |
+| **Profiler**          | Estimates time + energy                     |
+| **Carbon Provider**   | Retrieves grid carbon intensity             |
+| **Selector**          | Chooses plan or defers                      |
+| **Executor**          | Runs via DuckDB                             |
+| **Metrics Collector** | Records runtime + emissions                 |
+| **Streamlit UI**      | Simple interface                            |
+
 ---
 
-## 🔬 The Research Contribution: Uncertainty Metrics
+## 🔧 Requirements
 
-This project advances the state of the art by explicitly modeling uncertainty in carbon-aware scheduling.
+* Python 3.10+
+* DuckDB
+* Linux / WSL2 recommended for energy measurements
+* Optional: ElectricityMaps API token
 
-### 1. Forecast Uncertainty ($I$)
-We utilize a 95% confidence interval for carbon intensity forecasts. The decision logic conservatively uses the lower bound of the forecast to avoid false positives in deferral decisions.
+> Without RAPL hardware, energy reporting is estimated.
 
-$$ CI_{forecast} - I_{uncertainty} > Threshold \Rightarrow \text{Defer} $$
+---
 
-### 2. Energy Variability ($\sigma$)
-Energy consumption is not static. We profile queries to calculate the standard deviation ($\sigma$) of energy usage, providing a reliability metric for our emissions estimates.
-
-### Benchmarking
-To reproduce our results and view these metrics:
+## 📦 Installation
 
 ```bash
-# Run the benchmarking suite
-python benchmarks/run_tests.py
+git clone <repo-url>
+cd carbon-aware-sql-engine
+
+python -m venv venv
+source venv/bin/activate   # Windows: .\venv\Scripts\activate
+
+pip install -r requirements.txt
 ```
 
-The results will populate the database and can be visualized in the dashboard.
+Optional `.env`:
+
+```
+ELECTRICITYMAPS_API_TOKEN=<token>
+EM_ZONE=US-CAL-CISO
+```
 
 ---
 
-## 🚀 Getting Started
+## ▶️ Quick Start
 
-### Prerequisites
-*   Docker & Docker Compose
-*   Python 3.9+
+### Python
 
-### Quick Start
+```python
+from src.core.engine import CarbonAwareQueryEngine
+from src.optimizer.selector import QueryUrgency
 
-1.  **Clone the repository**
-    ```bash
-    git clone https://github.com/yourusername/energy-ml-project.git
-    cd energy-ml-project
-    ```
+engine = CarbonAwareQueryEngine()
 
-2.  **Configure Environment**
-    Copy `.env.example` to `.env` and add your API keys.
-    ```bash
-    cp .env.example .env
-    ```
+result, metrics, decision = engine.execute_query(
+    "SELECT COUNT(*) FROM my_table",
+    urgency=QueryUrgency.MEDIUM,
+    explain=True
+)
 
-3.  **Launch System**
-    ```bash
-    docker-compose up -d
-    ```
+print(result)
+print(metrics)
+print(decision.explain())
+```
 
-4.  **Access Dashboard**
-    Navigate to `http://localhost:8501` to view the UI and execute queries.
+### UI
 
----
-
-## 📚 Documentation
-
-*   [Deployment Guide](DEPLOYMENT_GUIDE.md): Instructions for deploying to Render and Streamlit Cloud.
-*   [API Documentation](http://localhost:8000/docs): Swagger UI for the backend API.
+```bash
+streamlit run src/energy_ml/decision_app.py
+```
 
 ---
 
-## 📄 License
+## 📂 Directory Structure
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```
+src/
+ ├─ core/          # Engine + profiling + execution
+ ├─ optimizer/     # Policy + carbon integration
+ └─ utils/         # SQL parsing
+```
+
+---
+
+## ✅ Example Output
+
+```
+Plan chosen: Efficient
+Reason: High grid carbon → minimize energy
+Exec time: 412 ms
+Energy: ~7 J
+Emissions: ~0.004 g CO₂
+Action: Deferred 90 min (non-urgent)
+```
+
+---
+
+## ⚠ Limitations
+
+* Most accurate on Linux / WSL2
+* Scheduling is not persistent (PoC only)
+* Carbon data depends on region/provider
+
+---
+
+## 🎯 Goal
+
+Show that query planners can:
+
+* Consider environmental signals
+* Adjust execution strategy automatically
+* Reduce emissions without developer involvement
+
+> This is a research prototype, not a production database.
