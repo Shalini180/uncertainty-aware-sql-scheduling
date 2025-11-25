@@ -1,0 +1,139 @@
+INDIVIDUAL TEST RESULTS
+================================================================================
+
+
+================================================================================
+tests/test_version.py: FAIL
+================================================================================
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.0, pluggy-1.6.0 -- C:\Users\ACER\AppData\Local\Programs\Python\Python311\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\ACER\Desktop\Projects\energy-ml-project
+configfile: pyproject.toml
+plugins: anyio-4.11.0
+collecting ... collected 0 items / 1 error
+
+=================================== ERRORS ====================================
+___________________ ERROR collecting tests/test_version.py ____________________
+ImportError while importing test module 'C:\Users\ACER\Desktop\Projects\energy-ml-project\tests\test_version.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_version.py:1: in <module>
+    from energy_ml import __version__
+E   ModuleNotFoundError: No module named 'energy_ml'
+=========================== short test summary info ===========================
+ERROR tests/test_version.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+============================== 1 error in 0.42s ===============================
+
+
+================================================================================
+tests/test_smoke.py: PASS
+================================================================================
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.0, pluggy-1.6.0 -- C:\Users\ACER\AppData\Local\Programs\Python\Python311\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\ACER\Desktop\Projects\energy-ml-project
+configfile: pyproject.toml
+plugins: anyio-4.11.0
+collecting ... collected 1 item
+
+tests/test_smoke.py::test_analyzer_smoke PASSED                          [100%]
+
+============================== 1 passed in 0.06s ==============================
+
+
+================================================================================
+tests/test_compiler.py: PASS
+================================================================================
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.0, pluggy-1.6.0 -- C:\Users\ACER\AppData\Local\Programs\Python\Python311\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\ACER\Desktop\Projects\energy-ml-project
+configfile: pyproject.toml
+plugins: anyio-4.11.0
+collecting ... collected 1 item
+
+tests/test_compiler.py::test_variants_exist_and_scaled PASSED            [100%]
+
+============================== 1 passed in 0.07s ==============================
+
+
+================================================================================
+tests/test_executor.py: FAIL
+================================================================================
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.0, pluggy-1.6.0 -- C:\Users\ACER\AppData\Local\Programs\Python\Python311\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\ACER\Desktop\Projects\energy-ml-project
+configfile: pyproject.toml
+plugins: anyio-4.11.0
+collecting ... collected 1 item
+
+tests/test_executor.py::test_select_runs_and_metrics_exist FAILED        [100%]
+
+================================== FAILURES ===================================
+_____________________ test_select_runs_and_metrics_exist ______________________
+tests\test_executor.py:11: in test_select_runs_and_metrics_exist
+    assert metrics.backend in ("rapl", "noop")
+           ^^^^^^^^^^^^^^^
+E   AttributeError: 'EnergyMetrics' object has no attribute 'backend'
+=========================== short test summary info ===========================
+FAILED tests/test_executor.py::test_select_runs_and_metrics_exist - Attribute...
+============================== 1 failed in 0.15s ==============================
+
+
+================================================================================
+tests/test_profiler.py: FAIL
+================================================================================
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.0, pluggy-1.6.0 -- C:\Users\ACER\AppData\Local\Programs\Python\Python311\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\ACER\Desktop\Projects\energy-ml-project
+configfile: pyproject.toml
+plugins: anyio-4.11.0
+collecting ... collected 0 items / 1 error
+
+=================================== ERRORS ====================================
+___________________ ERROR collecting tests/test_profiler.py ___________________
+ImportError while importing test module 'C:\Users\ACER\Desktop\Projects\energy-ml-project\tests\test_profiler.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\AppData\Local\Programs\Python\Python311\Lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_profiler.py:1: in <module>
+    from src.core.profiler import measure, to_metrics
+E   ImportError: cannot import name 'measure' from 'src.core.profiler' (C:\Users\ACER\Desktop\Projects\energy-ml-project\src\core\profiler.py)
+=========================== short test summary info ===========================
+ERROR tests/test_profiler.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+============================== 1 error in 1.77s ===============================
+
+
+================================================================================
+tests/test_query_parser.py: FAIL
+================================================================================
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.0, pluggy-1.6.0 -- C:\Users\ACER\AppData\Local\Programs\Python\Python311\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\ACER\Desktop\Projects\energy-ml-project
+configfile: pyproject.toml
+plugins: anyio-4.11.0
+collecting ... collected 2 items
+
+tests/test_query_parser.py::test_analyze_flags_and_tables FAILED         [ 50%]
+tests/test_query_parser.py::test_subquery_detection PASSED               [100%]
+
+================================== FAILURES ===================================
+________________________ test_analyze_flags_and_tables ________________________
+tests\test_query_parser.py:9: in test_analyze_flags_and_tables
+    assert "orders" in out["tables"] and "customers" in out["tables"]
+E   AssertionError: assert ('orders' in [])
+=========================== short test summary info ===========================
+FAILED tests/test_query_parser.py::test_analyze_flags_and_tables - AssertionE...
+========================= 1 failed, 1 passed in 0.13s =========================
+

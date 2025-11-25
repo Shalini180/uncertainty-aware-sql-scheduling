@@ -1,0 +1,1010 @@
+[
+  {
+    "timestamp": "2025-11-18T07:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 352,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T08:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 360,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T09:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 374,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T10:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 191,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T11:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 187,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T12:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 185,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T13:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 183,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T14:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 209,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T15:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 182,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T16:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 211,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T17:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 498,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T18:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 481,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T19:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 538,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T20:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 510,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T21:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 508,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T22:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 322,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-18T23:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 353,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T00:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 373,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T01:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 339,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T02:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 365,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T03:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 350,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T04:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 366,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T05:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 362,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T06:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 337,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T07:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 347,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T08:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 323,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T09:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 373,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T10:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 206,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T11:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 187,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T12:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 181,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T13:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 202,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T14:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 180,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T15:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 201,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T16:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 205,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T17:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 478,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T18:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 520,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T19:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 477,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T20:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 453,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T21:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 485,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T22:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 367,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-19T23:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 349,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T00:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 350,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T01:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 335,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T02:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 329,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T03:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 342,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T04:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 360,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T05:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 361,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T06:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 329,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T07:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 349,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T08:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 362,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T09:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 358,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T10:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 184,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T11:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 186,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T12:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 189,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T13:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 214,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T14:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 202,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T15:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 217,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T16:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 184,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T17:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 516,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T18:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 470,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T19:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 454,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T20:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 547,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T21:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 506,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T22:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 349,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-20T23:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 352,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T00:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 324,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T01:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 378,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T02:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 354,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T03:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 359,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T04:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 367,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T05:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 346,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T06:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 350,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T07:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 336,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T08:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 356,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T09:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 376,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T10:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 191,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T11:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 197,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T12:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 192,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T13:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 208,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T14:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 218,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T15:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 197,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T16:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 206,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T17:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 498,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T18:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 475,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T19:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 508,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T20:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 471,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T21:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 482,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T22:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 336,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-21T23:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 365,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T00:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 345,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T01:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 374,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T02:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 358,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T03:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 333,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T04:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 372,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T05:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 339,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T06:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 331,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T07:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 336,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T08:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 342,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T09:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 331,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T10:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 194,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T11:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 183,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T12:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 205,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T13:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 182,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T14:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 190,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T15:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 199,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T16:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 186,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T17:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 491,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T18:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 462,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T19:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 514,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T20:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 539,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T21:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 504,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T22:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 329,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-22T23:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 337,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T00:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 337,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T01:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 338,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T02:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 364,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T03:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 371,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T04:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 366,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T05:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 337,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T06:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 375,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T07:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 321,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T08:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 349,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T09:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 326,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T10:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 196,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T11:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 188,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T12:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 201,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T13:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 207,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T14:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 204,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T15:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 218,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T16:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 207,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T17:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 546,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T18:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 525,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T19:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 460,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T20:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 494,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T21:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 508,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T22:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 343,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-23T23:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 349,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T00:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 338,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T01:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 348,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T02:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 358,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T03:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 323,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T04:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 380,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T05:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 342,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T06:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 353,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T07:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 348,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T08:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 360,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T09:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 350,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T10:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 196,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T11:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 196,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T12:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 207,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T13:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 184,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T14:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 186,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T15:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 193,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T16:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 180,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T17:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 464,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T18:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 478,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T19:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 503,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T20:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 483,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T21:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 541,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T22:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 348,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-24T23:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 350,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-25T00:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 375,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-25T01:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 343,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-25T02:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 326,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-25T03:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 328,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-25T04:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 365,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-25T05:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 365,
+    "source": "synthetic"
+  },
+  {
+    "timestamp": "2025-11-25T06:55:46.790666",
+    "zone": "US-CAL-CISO",
+    "carbon_intensity": 360,
+    "source": "synthetic"
+  }
+]

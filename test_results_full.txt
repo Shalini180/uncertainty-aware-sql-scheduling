@@ -1,0 +1,28 @@
+================================================================================
+FULL TEST SUITE RESULTS
+================================================================================
+
+STDOUT:
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.0, pluggy-1.6.0 -- C:\Users\ACER\AppData\Local\Programs\Python\Python311\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\ACER\Desktop\Projects\energy-ml-project
+configfile: pyproject.toml
+plugins: anyio-4.11.0
+collecting ... collected 7 items
+
+tests/test_compiler.py::test_variants_exist_and_scaled PASSED            [ 14%]
+tests/test_executor.py::test_select_runs_and_metrics_exist PASSED        [ 28%]
+tests/test_profiler.py::test_profiler_context PASSED                     [ 42%]
+tests/test_query_parser.py::test_analyze_flags_and_tables PASSED         [ 57%]
+tests/test_query_parser.py::test_subquery_detection PASSED               [ 71%]
+tests/test_smoke.py::test_analyzer_smoke PASSED                          [ 85%]
+tests/test_version.py::test_version PASSED                               [100%]
+
+============================== 7 passed in 1.86s ==============================
+
+
+STDERR:
+
+
+Return Code: 0

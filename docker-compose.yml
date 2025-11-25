@@ -10,11 +10,10 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme123}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init_db.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -29,7 +28,7 @@ services:
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -52,6 +51,7 @@ services:
       - ELECTRICITYMAPS_API_TOKEN=${ELECTRICITYMAPS_API_TOKEN}
       - EM_ZONE=${EM_ZONE:-US-CAL-CISO}
       - ENVIRONMENT=production
+      - ENERGY_ML_API_KEY=${ENERGY_ML_API_KEY:-dev-secret-key-change-in-production-196623272}
     ports:
       - "8501:8501"
       - "8000:8000"
@@ -65,9 +65,8 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.api
     container_name: energy_ml_api
-    command: uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
     depends_on:
       postgres:
         condition: service_healthy
@@ -78,14 +77,24 @@ services:
       - REDIS_URL=redis://redis:6379/0
       - ELECTRICITYMAPS_API_TOKEN=${ELECTRICITYMAPS_API_TOKEN}
       - EM_ZONE=${EM_ZONE:-US-CAL-CISO}
+      - ENVIRONMENT=production
+      - ENERGY_ML_API_KEY=${ENERGY_ML_API_KEY:-dev-secret-key-change-in-production-196623272}
+      - GUNICORN_WORKERS=4
     ports:
       - "8000:8000"
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
+      - sqlalchemy_data:/app/src/db
     restart: unless-stopped
     networks:
       - energy_ml_network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   scheduler:
     build:
@@ -111,6 +120,8 @@ volumes:
   postgres_data:
     driver: local
   redis_data:
+    driver: local
+  sqlalchemy_data:
     driver: local
 
 networks:

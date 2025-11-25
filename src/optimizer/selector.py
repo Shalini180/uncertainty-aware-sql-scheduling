@@ -19,6 +19,15 @@ class QueryUrgency(Enum):
     LOW = "low"
     BATCH = "batch"
 
+    def to_int(self) -> int:
+        return {
+            "critical": 5,
+            "high": 4,
+            "medium": 3,
+            "low": 2,
+            "batch": 1,
+        }[self.value]
+
 
 @dataclass
 class SelectionContext:
@@ -43,7 +52,7 @@ class SelectionDecision:
     expected_carbon: Optional[float] = None
 
     def explain(self) -> str:
-        """Human-readable explanation"""
+        """Human‑readable explanation"""
         explanation = [
             f"Selected: {self.selected_strategy.value.upper()}",
             f"Reason: {self.reason}",
@@ -57,6 +66,42 @@ class SelectionDecision:
         return "\n".join(explanation)
 
 
+class Strategies:
+    """Container for query execution strategies"""
+
+    @staticmethod
+    def latency_first(urgency: int, carbon: float) -> str:
+        """Strategy A: Always FAST"""
+        return "fast"
+
+    @staticmethod
+    def carbon_deferred(urgency: int, carbon: float) -> str:
+        """Strategy B: Carbon‑Aware Deferred"""
+        # 1. Critical/High urgency – prioritize performance/completion
+        if urgency >= 4:  # High or Critical
+            return "balanced"
+        # 2. Low urgency + high carbon – defer
+        THRESHOLD_CARBON = 400
+        THRESHOLD_URGENCY = 3  # Below MEDIUM (i.e., LOW or BATCH)
+        if carbon > THRESHOLD_CARBON and urgency < THRESHOLD_URGENCY:
+            return "defer"
+        # 3. Default
+        return "balanced"
+
+    @staticmethod
+    def balanced_hybrid(urgency: int, carbon: float) -> str:
+        """Strategy C: Balanced Hybrid"""
+        return "efficient"
+
+
+def select_execution_strategy(urgency: int, carbon_intensity: float) -> str:
+    """
+    Select execution strategy based on urgency and carbon intensity.
+    Defaults to Strategy B (Carbon‑Aware Deferred).
+    """
+    return Strategies.carbon_deferred(urgency, carbon_intensity)
+
+
 class CarbonAwareSelector:
     """Intelligent selector that chooses query execution variant"""
 
@@ -67,75 +112,40 @@ class CarbonAwareSelector:
 
     def select(self, context: SelectionContext) -> SelectionDecision:
         """Select optimal variant based on context"""
-        carbon_value = context.carbon_intensity.value
+        urgency_val = context.urgency.to_int()
+        carbon_val = context.carbon_intensity.value
+        decision_str = select_execution_strategy(urgency_val, carbon_val)
+        if decision_str == "fast":
+            return self._select_fast(context, "Strategy selected: FAST (Latency‑First)")
+        if decision_str == "efficient":
+            return self._select_efficient(
+                context, "Strategy selected: EFFICIENT (Balanced Hybrid)"
+            )
+        if decision_str == "defer":
+            return self._select_defer(context, carbon_val)
+        # Default to balanced
+        return self._select_balanced(
+            context, f"Strategy selected: {decision_str.upper()}"
+        )
 
-        # Rule 1: CRITICAL queries always use FAST
-        if context.urgency == QueryUrgency.CRITICAL:
-            return self._select_critical(context)
-
-        # Rule 2: BATCH queries can be deferred or use EFFICIENT
-        if context.urgency == QueryUrgency.BATCH:
-            return self._select_batch(context)
-
-        # Rule 3: Adapt to carbon intensity
-        if carbon_value < self.LOW_CARBON:
-            return self._select_low_carbon(context)
-        elif carbon_value > self.HIGH_CARBON:
-            return self._select_high_carbon(context)
-        else:
-            return self._select_medium_carbon(context)
-
-    def _select_critical(self, context: SelectionContext) -> SelectionDecision:
+    def _select_fast(self, context: SelectionContext, reason: str) -> SelectionDecision:
+        """Select FAST variant (equivalent to old _select_critical logic)"""
         strategy = ExecutionStrategy.FAST
         variant = context.available_variants[strategy]
         return SelectionDecision(
             selected_strategy=strategy,
             selected_variant=variant,
-            reason=f"Critical query requires minimum latency (SLA < 100ms)",
+            reason=reason,
             expected_energy=variant.estimated_energy,
             expected_carbon=self._estimate_carbon(variant, context.carbon_intensity),
         )
 
-    def _select_batch(self, context: SelectionContext) -> SelectionDecision:
+    def _select_efficient(
+        self, context: SelectionContext, reason: str
+    ) -> SelectionDecision:
+        """Select EFFICIENT variant"""
         strategy = ExecutionStrategy.EFFICIENT
         variant = context.available_variants[strategy]
-
-        forecast = self.carbon_api.get_forecast(hours=6)
-        current_carbon = context.carbon_intensity.value
-        min_forecast = min(forecast, key=lambda f: f.value)
-
-        if min_forecast.value < current_carbon * 0.7:
-            hours_to_wait = (
-                min_forecast.timestamp - context.carbon_intensity.timestamp
-            ).total_seconds() / 3600
-            return SelectionDecision(
-                selected_strategy=strategy,
-                selected_variant=variant,
-                reason=f"Batch query - deferring for lower carbon ({current_carbon:.0f} → {min_forecast.value:.0f} gCO2/kWh)",
-                should_defer=True,
-                defer_minutes=int(hours_to_wait * 60),
-            )
-
-        return SelectionDecision(
-            selected_strategy=strategy,
-            selected_variant=variant,
-            reason=f"Batch query using energy-efficient variant (carbon: {current_carbon:.0f} gCO2/kWh)",
-            expected_energy=variant.estimated_energy,
-            expected_carbon=self._estimate_carbon(variant, context.carbon_intensity),
-        )
-
-    def _select_low_carbon(self, context: SelectionContext) -> SelectionDecision:
-        carbon_value = context.carbon_intensity.value
-        if context.urgency == QueryUrgency.HIGH:
-            strategy = ExecutionStrategy.FAST
-            reason = (
-                f"Low carbon ({carbon_value:.0f} gCO2/kWh) + high urgency → using FAST"
-            )
-        else:
-            strategy = ExecutionStrategy.BALANCED
-            reason = f"Low carbon ({carbon_value:.0f} gCO2/kWh) → using BALANCED"
-
-        variant = context.available_variants[strategy]
         return SelectionDecision(
             selected_strategy=strategy,
             selected_variant=variant,
@@ -144,32 +154,66 @@ class CarbonAwareSelector:
             expected_carbon=self._estimate_carbon(variant, context.carbon_intensity),
         )
 
-    def _select_high_carbon(self, context: SelectionContext) -> SelectionDecision:
-        carbon_value = context.carbon_intensity.value
-        if context.urgency == QueryUrgency.HIGH:
-            strategy = ExecutionStrategy.BALANCED
-            reason = f"High carbon ({carbon_value:.0f} gCO2/kWh) + high urgency → using BALANCED compromise"
-        else:
-            strategy = ExecutionStrategy.EFFICIENT
-            reason = f"High carbon ({carbon_value:.0f} gCO2/kWh) → minimizing energy with EFFICIENT"
-
-        variant = context.available_variants[strategy]
-        return SelectionDecision(
-            selected_strategy=strategy,
-            selected_variant=variant,
-            reason=reason,
-            expected_energy=variant.estimated_energy,
-            expected_carbon=self._estimate_carbon(variant, context.carbon_intensity),
-        )
-
-    def _select_medium_carbon(self, context: SelectionContext) -> SelectionDecision:
-        carbon_value = context.carbon_intensity.value
+    def _select_balanced(
+        self, context: SelectionContext, reason: str
+    ) -> SelectionDecision:
+        """Select BALANCED variant"""
         strategy = ExecutionStrategy.BALANCED
         variant = context.available_variants[strategy]
         return SelectionDecision(
             selected_strategy=strategy,
             selected_variant=variant,
-            reason=f"Medium carbon ({carbon_value:.0f} gCO2/kWh) → using BALANCED",
+            reason=reason,
+            expected_energy=variant.estimated_energy,
+            expected_carbon=self._estimate_carbon(variant, context.carbon_intensity),
+        )
+
+    def _select_defer(
+        self, context: SelectionContext, current_carbon: float
+    ) -> SelectionDecision:
+        """Handle deferral logic with a conservative carbon forecast.
+
+        Uses the forecast lower bound (value − uncertainty) to decide whether
+        deferral is necessary. If the lower bound is below the threshold (400),
+        the query proceeds without deferral. Otherwise we attempt to find a
+        better future time within the next 6 hours.
+        """
+        strategy = ExecutionStrategy.BALANCED  # defer implies BALANCED later
+        variant = context.available_variants[strategy]
+        defer_minutes = 60  # default
+        reason = (
+            f"Carbon ({current_carbon:.0f}) > 400. Deferring 60m (forecast unavailable)"
+        )
+        try:
+            forecast = self.carbon_api.get_forecast(hours=6)
+            if forecast:
+                # Find the forecast entry with the lowest carbon intensity
+                min_forecast = min(forecast, key=lambda f: f.value)
+                lower_bound = min_forecast.value - min_forecast.uncertainty
+                if lower_bound < 400:
+                    defer_minutes = 0
+                    reason = (
+                        f"Carbon ({current_carbon:.0f}) > 400 but forecast lower bound "
+                        f"({lower_bound:.0f}) < 400 – proceeding without deferral."
+                    )
+                else:
+                    # Calculate wait time until that forecasted moment
+                    time_diff = (
+                        min_forecast.timestamp - context.carbon_intensity.timestamp
+                    )
+                    defer_minutes = max(15, int(time_diff.total_seconds() / 60))
+                    reason = (
+                        f"Carbon ({current_carbon:.0f}) > 400. Deferring {defer_minutes}m "
+                        f"for lower carbon ({min_forecast.value:.0f}±{min_forecast.uncertainty:.0f})"
+                    )
+        except Exception as e:
+            logger.warning(f"Failed to get forecast: {e}")
+        return SelectionDecision(
+            selected_strategy=strategy,
+            selected_variant=variant,
+            reason=reason,
+            should_defer=defer_minutes > 0,
+            defer_minutes=defer_minutes,
             expected_energy=variant.estimated_energy,
             expected_carbon=self._estimate_carbon(variant, context.carbon_intensity),
         )

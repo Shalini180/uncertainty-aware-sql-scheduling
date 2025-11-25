@@ -10,6 +10,7 @@ class EnergyMetrics:
     energy_joules: float
     duration_ms: float
     power_watts: float
+    backend: str = "noop"
 
     def carbon_grams(self, carbon_intensity_g_per_kwh: float) -> float:
         # 1 kWh = 3_600_000 J

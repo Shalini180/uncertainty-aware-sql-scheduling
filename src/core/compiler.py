@@ -20,6 +20,7 @@ class QueryVariant:
 
     strategy: ExecutionStrategy
     config: Dict
+    sql: Optional[str] = None
     estimated_energy: Optional[float] = None
     estimated_latency: Optional[float] = None
 
@@ -49,16 +50,19 @@ class MultiVariantCompiler:
             },
             estimated_latency=100.0,
             estimated_energy=150.0,
+            sql=sql,
         )
 
         # EFFICIENT variant: Minimize energy
+        efficient_threads = max(1, self.max_threads // 4)
         variants[ExecutionStrategy.EFFICIENT] = QueryVariant(
             strategy=ExecutionStrategy.EFFICIENT,
             config={
-                "threads": max(1, self.max_threads // 4),
+                "threads": efficient_threads,
                 "memory_limit": "1GB",
                 "enable_optimizer": True,
             },
+            sql=self._optimize_efficient_sql(sql, efficient_threads),
             estimated_latency=200.0,
             estimated_energy=80.0,
         )
@@ -73,9 +77,24 @@ class MultiVariantCompiler:
             },
             estimated_latency=140.0,
             estimated_energy=110.0,
+            sql=sql,
         )
 
         return variants
+
+    def _optimize_efficient_sql(self, sql: str, threads: int) -> str:
+        """Optimize SQL for efficient execution"""
+        # Check for SELECT *
+        if "select *" in sql.lower():
+            import logging
+
+            logging.getLogger(__name__).warning(
+                "EFFICIENT plan detected 'SELECT *'. "
+                "Explicit column selection is recommended for better performance."
+            )
+
+        # Add PRAGMA threads
+        return f"PRAGMA threads={threads};\n{sql}"
 
     def get_connection(self, variant: QueryVariant) -> duckdb.DuckDBPyConnection:
         """Get or create a configured connection for a variant"""

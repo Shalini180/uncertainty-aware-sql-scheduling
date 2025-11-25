@@ -2,7 +2,8 @@
 import time
 import psutil
 from dataclasses import dataclass
-from typing import Callable, Any, Tuple, Optional
+from typing import Callable, Any, Tuple, Optional, List
+import statistics
 
 # Try to import pyRAPL, fall back to estimation
 try:
@@ -118,6 +119,52 @@ class EnergyProfiler:
         )
 
         return result, metrics
+
+    def profile_with_uncertainty(
+        self, func: Callable, iterations: int = 5, *args, **kwargs
+    ) -> Tuple[Any, EnergyMetrics, float]:
+        """
+        Profile a function multiple times to measure energy uncertainty
+
+        Args:
+            func: Function to profile
+            iterations: Number of times to run (default 5)
+            *args, **kwargs: Arguments to pass to function
+
+        Returns:
+            Tuple of (result, average_metrics, energy_std_dev_joules)
+        """
+        results = []
+        energy_readings = []
+        duration_readings = []
+        cpu_readings = []
+        memory_readings = []
+
+        # Warmup run
+        func(*args, **kwargs)
+
+        for _ in range(iterations):
+            res, met = self.profile(func, *args, **kwargs)
+            results.append(res)
+            energy_readings.append(met.energy_joules)
+            duration_readings.append(met.duration_ms)
+            cpu_readings.append(met.cpu_percent)
+            memory_readings.append(met.memory_mb)
+
+        # Calculate statistics
+        avg_energy = statistics.mean(energy_readings)
+        std_dev_energy = (
+            statistics.stdev(energy_readings) if len(energy_readings) > 1 else 0.0
+        )
+
+        avg_metrics = EnergyMetrics(
+            energy_joules=avg_energy,
+            duration_ms=statistics.mean(duration_readings),
+            cpu_percent=statistics.mean(cpu_readings),
+            memory_mb=statistics.mean(memory_readings),
+        )
+
+        return results[0], avg_metrics, std_dev_energy
 
     def profile_context(self):
         """Context manager for profiling"""

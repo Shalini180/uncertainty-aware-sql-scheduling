@@ -9,6 +9,7 @@ class CarbonIntensity:
     timestamp: datetime
     zone: str
     source: str
+    uncertainty: float = 0.0  # ± gCO2/kWh
 
     def is_low(self, threshold: float = 250) -> bool:
         return self.value < threshold
@@ -34,12 +35,22 @@ class CarbonAPI:
 
     def get_forecast(self, hours: int = 24) -> List[CarbonIntensity]:
         now = datetime.now()
-        return [
-            self.get_current_intensity().__class__(
-                value=self.get_current_intensity().value,
-                timestamp=now + timedelta(hours=i),
-                zone=self.zone,
-                source="forecast",
+        now = datetime.now()
+        forecast = []
+        for i in range(hours):
+            # Uncertainty increases with time: base 10 + 5 per hour
+            uncertainty = 10.0 + (i * 5.0)
+
+            # Simple forecast simulation
+            current = self.get_current_intensity()
+
+            forecast.append(
+                current.__class__(
+                    value=current.value,
+                    timestamp=now + timedelta(hours=i),
+                    zone=self.zone,
+                    source="forecast",
+                    uncertainty=uncertainty,
+                )
             )
-            for i in range(hours)
-        ]
+        return forecast

@@ -103,6 +103,7 @@ class QueryExecution(Base):
     execution_time_ms = Column(Float)
     energy_joules = Column(Float)
     carbon_intensity_gco2_kwh = Column(Float)
+    forecast_uncertainty_gco2_kwh = Column(Float)  # New uncertainty metric
     estimated_emissions_gco2 = Column(Float)
 
     # Scheduling
@@ -136,6 +137,7 @@ class QueryMetrics(Base):
     memory_mb = Column(Float)
     disk_io_mb = Column(Float)
     network_io_mb = Column(Float)
+    energy_std_dev_joules = Column(Float)  # New uncertainty metric
 
     # Query analysis
     num_joins = Column(Integer)
