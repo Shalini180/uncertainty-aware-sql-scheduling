@@ -4,23 +4,6 @@ A proof-of-concept query engine that reduces carbon emissions by choosing **when
 
 Modern databases only optimize for speed.
 But electricity gets cleaner or dirtier throughout the day.
-If a workload isn’t urgent, delaying execution may significantly reduce its carbon footprint.
-
-This project explores how **carbon awareness** can become a first-class concern in query planning.
-
----
-
-✅ Key Capabilities
-
-- Analyze SQL structure (joins, aggregations, complexity)
-
-- Generate multiple execution plans: Fast / Balanced / Efficient
-
-- Estimate runtime and approximate energy usage
-
-- Retrieve real-time carbon-intensity data (or use fallback model)
-
-- Select the best execution option based on:
 
 - Query urgency
 

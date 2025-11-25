@@ -23,7 +23,7 @@ We will deploy the FastAPI backend, PostgreSQL database, and Redis scheduler on 
 3.  **Region**: Same as your database.
 4.  **Plan**: Free.
 5.  **Create Redis**.
-6.  **Copy the `Internal Redis URL`**.
+6.  **Copy the `Internal Redis URL`** (for internal services) and `External Redis URL` (for local access).
 
 ### 3. Web Service (FastAPI)
 1.  Click **New +** -> **Web Service**.
@@ -40,14 +40,30 @@ We will deploy the FastAPI backend, PostgreSQL database, and Redis scheduler on 
     *   `ENVIRONMENT`: `production`
     *   `PYTHON_VERSION`: `3.9.13` (or your local version)
 
-### 4. Scheduler Service (Background Worker)
-1.  Click **New +** -> **Background Worker**.
-2.  Connect the same repository.
-3.  **Name**: `energy-ml-scheduler`
-4.  **Runtime**: Python 3.
-5.  **Build Command**: `pip install -r requirements.txt`
-6.  **Start Command**: `python -m src.scheduler.worker`
-7.  **Environment Variables**: Same as Web Service.
+### 4. Local Scheduler Setup (Hybrid Deployment)
+**Note:** For a cost-effective "Hybrid" deployment, you can run the Scheduler Service locally on your machine instead of paying for a Worker instance on Render.
+
+1.  **Prerequisites**:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+2.  **Obtain External Redis URL**:
+    *   Go to your Render Dashboard -> Redis Service.
+    *   Copy the **External Connection String** (e.g., `rediss://...`).
+
+3.  **Run the Worker**:
+    ```bash
+    # Set the Redis URL (replace with your actual external URL)
+    # Windows (PowerShell)
+    $env:REDIS_URL="rediss://default:password@host:port"
+    celery -A src.scheduler.app worker -l info
+
+    # Linux/Mac
+    export REDIS_URL="rediss://default:password@host:port"
+    celery -A src.scheduler.app worker -l info
+    ```
+    *The worker will now listen to the Redis queue hosted on Render and execute deferred tasks locally.*
 
 ---
 
