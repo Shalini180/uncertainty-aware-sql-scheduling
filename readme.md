@@ -1,168 +1,203 @@
-# 🌿 Carbon-Aware SQL Query Engine
+# Uncertainty-Aware SQL Scheduling (DuckDB)
 
-A proof-of-concept query engine that reduces carbon emissions by choosing **when** and **how** to run SQL workloads based on real-time grid conditions.
+A **research prototype** investigating how execution order, workload variance, and external uncertainty influence tail latency in analytical query workloads.
 
-Modern databases only optimize for speed.
-But electricity gets cleaner or dirtier throughout the day.
-
-- Query urgency
-
-- Carbon intensity
-
-- Performance trade-offs
-
-- Optionally defer non-urgent queries to cleaner time windows
-
-- Provide clear execution + decision explanation
-
-Built on DuckDB for lightweight local execution
+This project stems from production failures where systems appeared healthy under aggregate metrics (CPU utilization, throughput, mean latency) yet users experienced missed deadlines and severe tail-latency degradation. The prototype isolates **coordination effects** in a controlled setting—not sustained resource contention.
 
 ---
 
-## 🧠 Why This Matters
+## Research Questions
 
-> The carbon emissions of a query depend not only on how fast it runs,
-> but also **when and where** it runs.
+1. **When does execution order become the dominant driver of tail latency?**
+2. **Under what conditions does ordering sensitivity *not* emerge?**
+3. **How do deterministic scheduling policies behave under noisy external signals?**
 
-By scheduling non-urgent operations during low-carbon periods, large systems can reduce emissions at scale without changing the workload.
-
-This repository demonstrates one possible design for a **sustainable database optimizer**.
+The system is designed to **surface and isolate variance** hidden by average-case metrics, not to optimize performance.
 
 ---
 
-## 🏗 Architecture Overview
+## Key Findings
+
+| Condition | Tail Latency Impact |
+|-----------|---------------------|
+| High inter-query cost variance + loosely coupled admission/execution | Up to **3× increase** in p99 latency from small ordering changes |
+| Same conditions, mean latency | Changed **< 5%** (masking reliability risk) |
+| Homogeneous query costs | Minimal ordering sensitivity |
+| Tightly synchronized queueing | Minimal ordering sensitivity |
+| Noisy external signals (e.g., carbon forecasts) | Deterministic deferral reduced throughput with no tail improvement |
+
+**Takeaway:** Ordering sensitivity is *conditional*, not universal—it emerges only under specific architectural and workload assumptions.
+
+---
+
+## Architecture
 
 ```
-SQL Query
-   │
-   ▼
-Query Analyzer ──► Plan Compiler ──► Profiler
-   │                                 │
-   └─────────────► Carbon-Aware Selector ◄── Carbon Data
-                                     │
-                          ┌──────────┴──────────┐
-                          │                     │
-                     Run now                Defer
-                          │                     │
-                          ▼                     ▼
-                      Executor             Wait window
-                      (DuckDB)
+                    ┌────────────────────┐
+                    │    SQL Client      │
+                    └─────────┬──────────┘
+                              │
+                              ▼
+                    ┌────────────────────┐
+                    │   Query Analyzer   │
+                    │  (structure, cost) │
+                    └─────────┬──────────┘
+                              │
+                              ▼
+            ┌─────────────────────────────────────┐
+            │   Modified DuckDB Scheduler         │
+            │                                     │
+            │  • Admission / Execution Split      │
+            │  • Execution Order Control          │
+            │  • Optional Deferral Logic          │
+            └───────────┬─────────────────────────┘
+                        │
+          ┌─────────────┴─────────────┐
+          │                           │
+          ▼                           ▼
+   ┌─────────────┐          ┌─────────────────┐
+   │  Executor   │          │ External Signal │
+   │  (DuckDB)   │          │ (e.g., Carbon)  │
+   └──────┬──────┘          └─────────────────┘
+          │
+          ▼
+   ┌────────────────────┐
+   │ Metrics & Tracing  │
+   │  • admission delay │
+   │  • exec time       │
+   │  • completion time │
+   │  • tail latency    │
+   └────────────────────┘
 ```
 
-### Core Components
-
-| Component             | Role                                        |
-| --------------------- | ------------------------------------------- |
-| **Query Analyzer**    | Parses SQL + extracts query structure       |
-| **Plan Compiler**     | Builds Fast / Balanced / Efficient variants |
-| **Profiler**          | Estimates time + energy                     |
-| **Carbon Provider**   | Retrieves grid carbon intensity             |
-| **Selector**          | Chooses plan or defers                      |
-| **Executor**          | Runs via DuckDB                             |
-| **Metrics Collector** | Records runtime + emissions                 |
-| **Streamlit UI**      | Simple interface                            |
+The architecture prioritizes **repeatability and traceability** over throughput.
 
 ---
 
-## 🔧 Requirements
+## Getting Started
 
-* Python 3.10+
-* DuckDB
-* Linux / WSL2 recommended for energy measurements
-* Optional: ElectricityMaps API token
+### Prerequisites
 
-> Without RAPL hardware, energy reporting is estimated.
+- Python 3.9+
+- DuckDB 0.9+
+- NumPy, Pandas (for analysis)
 
----
-
-## 📦 Installation
+### Installation
 
 ```bash
-git clone <repo-url>
-cd carbon-aware-sql-engine
-
-python -m venv venv
-source venv/bin/activate   # Windows: .\venv\Scripts\activate
-
+git clone https://github.com/yourusername/uncertainty-sql-scheduler.git
+cd uncertainty-sql-scheduler
 pip install -r requirements.txt
 ```
 
-Optional `.env`:
-
-```
-ELECTRICITYMAPS_API_TOKEN=<token>
-EM_ZONE=US-CAL-CISO
-```
-
----
-
-## ▶️ Quick Start
-
-### Python
-
-```python
-from src.core.engine import CarbonAwareQueryEngine
-from src.optimizer.selector import QueryUrgency
-
-engine = CarbonAwareQueryEngine()
-
-result, metrics, decision = engine.execute_query(
-    "SELECT COUNT(*) FROM my_table",
-    urgency=QueryUrgency.MEDIUM,
-    explain=True
-)
-
-print(result)
-print(metrics)
-print(decision.explain())
-```
-
-### UI
+### Running Your First Experiment
 
 ```bash
-streamlit run src/energy_ml/decision_app.py
+# Generate a workload trace with high cost variance
+python scripts/generate_trace.py --variance high --queries 1000 -o traces/high_var.json
+
+# Run with FIFO execution order
+python scripts/run_experiment.py --trace traces/high_var.json --policy fifo
+
+# Run with reversed execution order (same admission order)
+python scripts/run_experiment.py --trace traces/high_var.json --policy reverse
+
+# Compare tail latencies
+python scripts/analyze.py --results results/fifo results/reverse --metric p99
 ```
 
 ---
 
-## 📂 Directory Structure
+## Experimental Design
+
+### Isolating Execution-Order Effects
+
+To distinguish structural scheduling effects from workload artifacts:
+
+- **Arrival rates** held constant
+- **Admission order** fixed via trace replay
+- **Execution order** varied independently
+- **Inter-query cost variance** controlled as an experimental variable
+
+### Carbon-Aware Deferral Extension
+
+The prototype treats carbon intensity as an **uncertain external signal**:
+
+- Forecasts are probabilistic, not deterministic
+- Deferral decisions avoid tail-risk violations under forecast error
+- Studies how noisy signals interact with scheduling policies
+
+This extension explores carbon awareness as a **systems constraint**, not a standalone optimization.
+
+---
+
+## Repository Structure
 
 ```
-src/
- ├─ core/          # Engine + profiling + execution
- ├─ optimizer/     # Policy + carbon integration
- └─ utils/         # SQL parsing
+├── src/
+│   ├── scheduler/        # Modified DuckDB scheduling logic
+│   ├── analyzer/         # Query cost estimation
+│   └── instrumentation/  # Metrics collection
+├── scripts/
+│   ├── generate_trace.py # Workload trace generation
+│   ├── run_experiment.py # Experiment runner
+│   └── analyze.py        # Results analysis (distributional)
+├── traces/               # Sample workload traces
+└── experiments/          # Experiment configurations
 ```
 
 ---
 
-## ✅ Example Output
+## Scope and Limitations
 
-```
-Plan chosen: Efficient
-Reason: High grid carbon → minimize energy
-Exec time: 412 ms
-Energy: ~7 J
-Emissions: ~0.004 g CO₂
-Action: Deferred 90 min (non-urgent)
+### This project is:
+- A systems research prototype
+- Focused on scheduling, coordination, and tail latency
+- Designed for controlled experimentation and trace replay
+
+### This project is not:
+- A production-ready database
+- A performance tuning tool
+- A green-computing product
+
+### Known limitations:
+- Scheduling state is not persistent
+- Results depend on workload construction and cost variance assumptions
+- Energy/carbon measurements are approximate and region-dependent
+
+These limitations are intentional to preserve experimental clarity.
+
+---
+
+## Citation
+
+If you use this work in your research, please cite:
+
+```bibtex
+@software{uncertainty_sql_scheduler,
+  author = {Shalini},
+  title = {Uncertainty-Aware SQL Scheduling},
+  year = {2025},
+  url = {https://github.com/yourusername/uncertainty-sql-scheduler}
+}
 ```
 
 ---
 
-## ⚠ Limitations
+## Related Work
 
-* Most accurate on Linux / WSL2
-* Scheduling is not persistent (PoC only)
-* Carbon data depends on region/provider
+- [DuckDB](https://duckdb.org/) - The underlying analytical database
+- Tail latency literature: Dean & Barroso, "The Tail at Scale" (2013)
+- Carbon-aware computing: Wiesner et al., "Let's Wait Awhile" (2021)
 
 ---
 
-## 🎯 Goal
+## License
 
-Show that query planners can:
+MIT License. See [LICENSE](LICENSE) for details.
 
-* Consider environmental signals
-* Adjust execution strategy automatically
-* Reduce emissions without developer involvement
+---
 
-> This is a research prototype, not a production database.
+## Contact
+
+For questions about the research or collaboration inquiries, please open an issue or reach out directly.
