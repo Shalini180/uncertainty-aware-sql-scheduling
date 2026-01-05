@@ -178,7 +178,7 @@ If you use this work in your research, please cite:
   author = {Shalini},
   title = {Uncertainty-Aware SQL Scheduling},
   year = {2025},
-  url = {https://github.com/yourusername/uncertainty-sql-scheduler}
+  url = {https://github.com/Shalini180/uncertainty-aware-sql-scheduling}
 }
 ```
 
